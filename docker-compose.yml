@@ -1,0 +1,7 @@
+services:
+  db:
+    image: postgres:16
+    environment: { POSTGRES_DB: driveease, POSTGRES_USER: driveease, POSTGRES_PASSWORD: "${DB_PASSWORD:-driveease}" }
+    ports: ["5432:5432"]
+    volumes: [dbdata:/var/lib/postgresql/data]
+volumes: { dbdata: {} }
