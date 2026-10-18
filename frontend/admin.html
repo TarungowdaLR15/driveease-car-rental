@@ -1,0 +1,49 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>DriveEase Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#05070d;--g:rgba(16,26,50,.6);--l:rgba(160,200,255,.14);--c:#3de0ff;--v:#8a7bff;--t:#eef3fb;--m:#8f9db8;--ok:#4be3a5;--warn:#ffc15a;--bad:#ff6b81;color-scheme:dark;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);box-sizing:border-box}
+*{box-sizing:border-box}html{background:var(--bg)}body{margin:0;font:400 15px/1.5 Manrope,system-ui,sans-serif;color:var(--t);background:radial-gradient(900px 500px at 85% -10%,rgba(61,224,255,.14),transparent),radial-gradient(700px 500px at 0 100%,rgba(138,123,255,.12),transparent);min-height:100vh;display:grid;grid-template-columns:240px 1fr}
+aside{padding:24px 16px;border-right:1px solid var(--l);background:rgba(8,12,24,.7);backdrop-filter:blur(14px);position:sticky;top:0;height:100vh}
+.logo{font-weight:800;font-size:20px;display:flex;gap:10px;align-items:center;margin:0 8px 28px}.logo i{width:30px;height:30px;border-radius:10px;background:linear-gradient(135deg,var(--c),var(--v));display:grid;place-items:center;color:#041018;font-style:normal}
+nav a{display:block;padding:11px 14px;border-radius:12px;color:var(--m);font-weight:600;margin-bottom:4px}nav a.on{color:var(--t);background:linear-gradient(90deg,rgba(61,224,255,.18),transparent);box-shadow:inset 2px 0 var(--c)}
+main{padding:28px 32px 48px;min-width:0}
+.head{position:relative;padding:28px;border:1px solid var(--l);border-radius:26px;background:var(--g);overflow:hidden;margin-bottom:22px}
+.head::after{content:"";position:absolute;inset:0;background:radial-gradient(circle,var(--c) 1.4px,transparent 1.8px) 0 0/12px 12px;-webkit-mask:linear-gradient(100deg,transparent 40%,#000);mask:linear-gradient(100deg,transparent 40%,#000);opacity:.35;pointer-events:none}
+.head h1{margin:0;font-size:32px;letter-spacing:-.03em}.head p{margin:4px 0 0;color:var(--m)}.head>*{position:relative;z-index:1}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:18px;margin-bottom:22px}
+.card{border:1px solid var(--l);border-radius:22px;background:var(--g);padding:20px;backdrop-filter:blur(10px)}
+.kpi small{color:var(--m)}.kpi b{display:block;font-size:30px;letter-spacing:-.03em;margin:2px 0}.kpi span{font-size:13px;color:var(--ok);font-weight:700}
+.two{display:grid;grid-template-columns:2fr 1fr;gap:18px;margin-bottom:22px}
+h3{margin:0 0 14px;font-size:17px}
+.bars{display:flex;align-items:flex-end;gap:10px;height:190px}.bars div{flex:1;border-radius:10px 10px 4px 4px;background:linear-gradient(180deg,var(--c),rgba(138,123,255,.55));position:relative;min-height:8px;transition:filter .2s}.bars div:hover{filter:brightness(1.3)}.bars em{position:absolute;bottom:-22px;left:50%;transform:translateX(-50%);font-size:11px;color:var(--m);font-style:normal}
+.donut{display:flex;gap:20px;align-items:center;flex-wrap:wrap}.donut ul{list-style:none;margin:0;padding:0;color:var(--m);font-size:13.5px}.donut li:before{content:"";display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--k);margin-right:8px}
+.tools{display:flex;gap:12px;margin-bottom:14px;flex-wrap:wrap}input,select{font:600 14px Manrope;color:var(--t);background:rgba(4,8,18,.6);border:1px solid var(--l);border-radius:12px;padding:10px 14px;box-shadow:inset 2px 2px 6px rgba(0,0,0,.4)}
+table{width:100%;border-collapse:collapse}th{text-align:left;color:var(--m);font-weight:600;font-size:13px;padding:10px 12px}td{padding:13px 12px;border-top:1px solid var(--l)}tr:hover td{background:rgba(61,224,255,.04)}
+.pill{padding:4px 12px;border-radius:999px;font-size:12px;font-weight:700;background:color-mix(in srgb,var(--p) 16%,transparent);color:var(--p)}
+.scroll{overflow-x:auto}
+@media(max-width:900px){body{grid-template-columns:1fr}aside{display:none}.two{grid-template-columns:1fr}main{padding:18px}}
+</style></head><body>
+<aside><div class="logo"><i>D</i>DriveEase</div><nav><a class="on" href="#">Overview</a><a href="#">Bookings</a><a href="#">Vehicles</a><a href="#">Customers</a><a href="#">Pricing tiers</a><a href="#">Reports</a><a href="index.html">Back to site</a></nav></aside>
+<main>
+<div class="head"><h1>Good evening, Admin</h1><p>Here is how DriveEase is performing this month. Sample data shown; the live build reads from the API.</p></div>
+<div class="kpis" id="kpis"></div>
+<div class="two"><div class="card"><h3>Revenue, last 8 months</h3><div class="bars" id="bars"></div><div style="height:22px"></div></div>
+<div class="card"><h3>Fleet utilization</h3><div class="donut"><svg id="dn" width="140" height="140" viewBox="0 0 42 42"></svg><ul id="lg"></ul></div></div></div>
+<div class="card"><h3>Recent bookings</h3><div class="tools"><input id="q" placeholder="Search reference or customer" aria-label="Search bookings"><select id="st" aria-label="Status"><option value="">All statuses</option><option>CONFIRMED</option><option>ACTIVE</option><option>PENDING</option><option>COMPLETED</option><option>CANCELLED</option></select></div>
+<div class="scroll"><table><thead><tr><th>Reference</th><th>Customer</th><th>Vehicle</th><th>Dates</th><th>Amount</th><th>Status</th></tr></thead><tbody id="tb"></tbody></table></div></div>
+</main>
+<script>
+const inr=n=>"₹"+n.toLocaleString("en-IN"),$=s=>document.querySelector(s);
+const K=[["Revenue this month",inr(842600),"+12.4%"],["Active rentals","38","+5 today"],["Pending approvals","6","Needs review"],["New customers","124","+18%"]];
+$("#kpis").innerHTML=K.map(k=>`<div class="card kpi"><small>${k[0]}</small><b>${k[1]}</b><span>${k[2]}</span></div>`).join("");
+const R=[310,420,380,510,560,470,690,842],M=["Mar","Apr","May","Jun","Jul","Aug","Sep","Oct"],mx=Math.max(...R);
+$("#bars").innerHTML=R.map((v,i)=>`<div style="height:${v/mx*100}%" title="${inr(v*1000)}"><em>${M[i]}</em></div>`).join("");
+const U=[["On rent",52,"#3de0ff"],["Available",33,"#8a7bff"],["Maintenance",15,"#ffc15a"]];let o=0;
+$("#dn").innerHTML='<circle cx="21" cy="21" r="15.9" fill="none" stroke="#111a33" stroke-width="5"/>'+U.map(u=>{const s=`<circle cx="21" cy="21" r="15.9" fill="none" stroke="${u[2]}" stroke-width="5" stroke-dasharray="${u[1]} ${100-u[1]}" stroke-dashoffset="${25-o}"/>`;o+=u[1];return s}).join("")+'<text x="21" y="23" text-anchor="middle" fill="#eef3fb" font-size="7" font-weight="800">52%</text>';
+$("#lg").innerHTML=U.map(u=>`<li style="--k:${u[2]}">${u[0]} ${u[1]}%</li>`).join("");
+const B=[["DE-10241","Aarav Mehta","Hyundai Creta","18–21 Oct",11340,"ACTIVE"],["DE-10240","Isha Rao","BMW 3 Series","19–22 Oct",27960,"CONFIRMED"],["DE-10239","Rohan Das","Tata Nexon EV","20–23 Oct",12740,"PENDING"],["DE-10238","Meera Nair","Honda City","12–15 Oct",9900,"COMPLETED"],["DE-10237","Kabir Shah","Porsche 911","15–16 Oct",24780,"CANCELLED"],["DE-10236","Ananya Iyer","Mahindra XUV700","21–25 Oct",21700,"CONFIRMED"]];
+const C={ACTIVE:"#3de0ff",CONFIRMED:"#4be3a5",PENDING:"#ffc15a",COMPLETED:"#8f9db8",CANCELLED:"#ff6b81"};
+function draw(){const q=$("#q").value.toLowerCase(),s=$("#st").value;const r=B.filter(b=>(!s||b[5]===s)&&b.slice(0,2).join(" ").toLowerCase().includes(q));
+$("#tb").innerHTML=r.length?r.map(b=>`<tr><td><b>${b[0]}</b></td><td>${b[1]}</td><td>${b[2]}</td><td>${b[3]}</td><td>${inr(b[4])}</td><td><span class="pill" style="--p:${C[b[5]]}">${b[5]}</span></td></tr>`).join(""):'<tr><td colspan="6" style="color:var(--m)">No bookings match. Clear the search or status filter.</td></tr>'}
+$("#q").oninput=draw;$("#st").onchange=draw;draw();
+</script></body></html>
